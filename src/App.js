@@ -1,25 +1,44 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = { keyword: '', data: [] };
+  }
+
+  fetchData = () => {
+    // REST API call comes here
+    const url = `https://api.github.com/search/repositories?q=${this.state.keyword}`;
+
+    fetch(url)
+      .then(response => response.json())
+      .then(responseData => {
+        this.setState({ data: responseData.items });
+      });
+  }
+
+  handleChange = (e) => {
+    this.setState({ keyword: e.target.value });
+  }
+
   render() {
+    const tableRows = this.state.data.map((item, index) =>
+      <tr key={index}>
+        <td>{item.full_name}</td>
+        <td><a href={item.html_url}>{item.html_url}</a></td>
+      </tr>
+    )
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <input type="text" onChange={this.handleChange} />
+        <button onClick={this.fetchData} value={this.state.keyword}>Fetch</button>
+        <table>
+          <tbody>
+            {tableRows}
+          </tbody>
+        </table>
       </div>
     );
   }
