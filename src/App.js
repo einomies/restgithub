@@ -55,8 +55,15 @@ class App extends Component {
 
         {/* To fill React Table with data, you have to pass the data prop to the component.
         Data can be an array or object and therefore we can use our state, called data.
-        Columns are defined using the columns prop and that prop is required: */}
-        <ReactTable data={this.state.data} columns={columns} />
+        Columns are defined using the columns prop and that prop is required. */}
+        {/* Filtering is disabled by default but you can enable it using the filterable prop in
+        the ReactTable component. You can also set the page size of the table. */}
+        <ReactTable
+          data={this.state.data}
+          columns={columns}
+          filterable={true}
+          defaultPageSize={10}
+        />
       </div>
     );
   }
