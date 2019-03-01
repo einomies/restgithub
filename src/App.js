@@ -32,7 +32,7 @@ class App extends Component {
     // of the column and the data accessor. The data accessor values come from our
     // REST API response data. You can see that our response data contains an object
     // called owner, and we can show these values using the owner.field_name
-    // syntax:
+    // syntax.
     const columns = [
       {
         Header: 'Name', // Header of the column
@@ -45,13 +45,30 @@ class App extends Component {
       {
         Header: 'Owner',
         accessor: 'owner.login'
+      },
+      // Cell renderers can be used to customize the content of the table cell. The following example
+      // shows how you can render a button to a table cell. The function in the cell renderer passes
+      // value as the argument and, in this case, the value will be full_name, which is defined in
+      // the accessor of the column. The other option is to pass a row, which passes the whole row
+      // object to the function. Then you have to define the btnClick function, which is invoked
+      // when the button is pressed and you can do something with the value that is sent to the
+      // function.
+      {
+        id: 'button',
+        sortable: false,
+        filterable: false,
+        width: 100,
+        accessor: 'full_name',
+        Cell: ({ value }) => {
+          return (<button className="btn btn-default btn-link" onClick={() => { this.btnClick(value); } }>Press me</button>);
+        }
       }
     ]
 
     return (
-      <div className="App">
+      <div className="App" >
         <input type="text" onChange={this.handleChange} />
-        <button onClick={this.fetchData} value={this.state.keyword}>Fetch</button>
+        <button onClick={this.fetchData} value={this.state.keyword} type="submit">Fetch</button>
 
         {/* To fill React Table with data, you have to pass the data prop to the component.
         Data can be an array or object and therefore we can use our state, called data.
